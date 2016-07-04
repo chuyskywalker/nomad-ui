@@ -40,28 +40,36 @@
 
 $nomadBaseUrl = getenv('NOMAD_BASEURL') ?: 'http://127.0.0.1:4646';
 
-$nodes = json_decode(file_get_contents($nomadBaseUrl . '/v1/nodes'));
-$jobs = json_decode(file_get_contents($nomadBaseUrl . '/v1/jobs'));
+$nodesRaw = @file_get_contents($nomadBaseUrl . '/v1/nodes');
+$jobsRaw  = @file_get_contents($nomadBaseUrl . '/v1/jobs');
+
+$nodes = @json_decode($nodesRaw);
+$jobs  = @json_decode($jobsRaw);
 
 $nodeInfos = [];
-foreach ($nodes as $node) {
+foreach ((array)$nodes as $node) {
     $nodeInfos[$node->ID] = json_decode(file_get_contents($nomadBaseUrl . '/v1/node/' . $node->ID));
 }
 
 $jobInfos = [];
-foreach ($jobs as $job) {
+foreach ((array)$jobs as $job) {
     $jobInfos[$job->ID] = json_decode(file_get_contents($nomadBaseUrl . '/v1/job/' . $job->ID));
 }
 
 ?>
 
-    <div class="container theme-showcase" role="main">
-        <div class="page-header">
-            <h1>Nomad Info</h1>
-        </div>
-
+        <div class="container theme-showcase" role="main">
+            <div class="page-header">
+                <h1>Nomad Info</h1>
+            </div>
 
             <p>@ <?= $nomadBaseUrl ?></p>
+
+            <?php if (empty($nodeInfos) || empty($jobInfos)) { ?>
+            <div class="alert alert-danger">
+                <strong>Error</strong> Could not fetch job/node status(es)
+            </div>
+            <?php } ?>
 
             <h2>Nodes</h2>
             <table class="table table-bordered">
@@ -80,7 +88,7 @@ foreach ($jobs as $job) {
                 <tbody>
 
                     <?php foreach ($nodeInfos as $nodeId => $nodeInfo) { ?>
-    
+
                     <tr>
                         <td><?= $nodeInfo->ID ?></td>
                         <td><?= $nodeInfo->Name ?></td>
@@ -96,7 +104,7 @@ foreach ($jobs as $job) {
                             <pre><?= json_encode($nodeInfo, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT) ?></pre>
                         </td>
                     </tr>
-    
+
                     <?php } ?>
 
                 </tbody>
@@ -125,7 +133,7 @@ foreach ($jobs as $job) {
                         <td><?= $jobInfo->Type ?></td>
                         <td><?= $jobInfo->Status ?></td>
                         <td><?
-    
+
                         echo "<ul>";
                         foreach ($jobInfo->TaskGroups as $g) {
                             echo "<li>". $g->Name ." (". $g->Count ."x)</li><ul>";
@@ -133,12 +141,15 @@ foreach ($jobs as $job) {
                                 switch ($task->Driver) {
                                     case 'docker':
                                         echo '<li>'. $task->Name . ':&nbsp;docker('. $task->Config->image .')</li>';
+                                        break;
+                                    default:
+                                        echo '<li>'. $task->Name . ':&nbsp;'. $task->Driver .'</li>';
                                 }
                             }
                             echo "</ul>";
                         }
                         echo "</ul>";
-    
+
                         ?></td>
                         <td><button class="moreInfo btn btn-default btn-xs">Full&nbsp;Info</button></td>
                     </tr>
