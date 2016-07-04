@@ -62,7 +62,7 @@ foreach ($jobs as $job) {
 
 
             <p>@ <?= $nomadBaseUrl ?></p>
-            
+
             <h2>Nodes</h2>
             <table class="table table-bordered">
                 <thead>
@@ -78,35 +78,31 @@ foreach ($jobs as $job) {
                     </tr>
                 </thead>
                 <tbody>
-            
-            <?php
-            foreach ($nodeInfos as $nodeId => $nodeInfo) {
-                ?>
-            
-                <tr>
-                    <td><?= $nodeInfo->ID ?></td>
-                    <td><?= $nodeInfo->Name ?></td>
-                    <td><?= $nodeInfo->HTTPAddr ?></td>
-                    <td><?= $nodeInfo->Resources->CPU ?></td>
-                    <td><?= $nodeInfo->Resources->MemoryMB ?></td>
-                    <td><?= $nodeInfo->Resources->DiskMB ?></td>
-                    <td><?= $nodeInfo->Status ?></td>
-                    <td><button class="moreInfo btn btn-default btn-xs">Full&nbsp;Info</button></td>
-                </tr>
-                <tr style="display: none">
-                    <td colspan=99>
-                        <pre><?= json_encode($nodeInfo, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT) ?></pre>
-                    </td>
-                </tr>
-            
-                <?php
-            }
-            ?>
-            
+
+                    <?php foreach ($nodeInfos as $nodeId => $nodeInfo) { ?>
+    
+                    <tr>
+                        <td><?= $nodeInfo->ID ?></td>
+                        <td><?= $nodeInfo->Name ?></td>
+                        <td><?= $nodeInfo->HTTPAddr ?></td>
+                        <td><?= $nodeInfo->Resources->CPU ?></td>
+                        <td><?= $nodeInfo->Resources->MemoryMB ?></td>
+                        <td><?= $nodeInfo->Resources->DiskMB ?></td>
+                        <td><?= $nodeInfo->Status ?></td>
+                        <td><button class="moreInfo btn btn-default btn-xs">Full&nbsp;Info</button></td>
+                    </tr>
+                    <tr style="display: none">
+                        <td colspan=99>
+                            <pre><?= json_encode($nodeInfo, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT) ?></pre>
+                        </td>
+                    </tr>
+    
+                    <?php } ?>
+
                 </tbody>
             </table>
-            
-            
+
+
             <h2>Jobs</h2>
             <table class="table table-bordered">
                 <thead>
@@ -120,44 +116,40 @@ foreach ($jobs as $job) {
                     </tr>
                 </thead>
                 <tbody>
-            
-            <?php
-            foreach ($jobInfos as $jobId => $jobInfo) {
-                ?>
-            
-                <tr>
-                    <td><?= $jobInfo->ID ?></td>
-                    <!--<td><?= $jobInfo->Name ?></td>-->
-                    <td><?= $jobInfo->Type ?></td>
-                    <td><?= $jobInfo->Status ?></td>
-                    <td><?
-            
-                    echo "<ul>";
-                    foreach ($jobInfo->TaskGroups as $g) {
-                        echo "<li>". $g->Name ." (". $g->Count ."x)</li><ul>";
-                        foreach($g->Tasks as $task) {
-                            switch ($task->Driver) {
-                                case 'docker':
-                                    echo '<li>'. $task->Name . ':&nbsp;docker('. $task->Config->image .')</li>';
+
+                    <?php foreach ($jobInfos as $jobId => $jobInfo) { ?>
+
+                    <tr>
+                        <td><?= $jobInfo->ID ?></td>
+                        <!--<td><?= $jobInfo->Name ?></td>-->
+                        <td><?= $jobInfo->Type ?></td>
+                        <td><?= $jobInfo->Status ?></td>
+                        <td><?
+    
+                        echo "<ul>";
+                        foreach ($jobInfo->TaskGroups as $g) {
+                            echo "<li>". $g->Name ." (". $g->Count ."x)</li><ul>";
+                            foreach($g->Tasks as $task) {
+                                switch ($task->Driver) {
+                                    case 'docker':
+                                        echo '<li>'. $task->Name . ':&nbsp;docker('. $task->Config->image .')</li>';
+                                }
                             }
+                            echo "</ul>";
                         }
                         echo "</ul>";
-                    }
-                    echo "</ul>";
-            
-                    ?></td>
-                    <td><button class="moreInfo btn btn-default btn-xs">Full&nbsp;Info</button></td>
-                </tr>
-                <tr style="display: none">
-                    <td colspan=99>
-                        <pre><?= json_encode($jobInfo, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT) ?></pre>
-                    </td>
-                </tr>
-            
-                <?php
-            }
-            ?>
-            
+    
+                        ?></td>
+                        <td><button class="moreInfo btn btn-default btn-xs">Full&nbsp;Info</button></td>
+                    </tr>
+                    <tr style="display: none">
+                        <td colspan=99>
+                            <pre><?= json_encode($jobInfo, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT) ?></pre>
+                        </td>
+                    </tr>
+
+                    <?php } ?>
+
                 </tbody>
             </table>
 
