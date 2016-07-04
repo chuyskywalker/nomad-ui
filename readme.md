@@ -9,7 +9,7 @@ You really only need to pass in the nomad url for this to work:
 ```
 docker run -ti --rm --name=nui \
  -p 8090:80 \
- -e 'NOMAD_BASEURL=http://consul.service.consul:4646' \
+ -e 'NOMAD_BASEURL=http://nomad-address:4646' \
  chuyskywalker/nomad-ui
 ```
 
