@@ -4,13 +4,13 @@ A basic, linkable, fast Nomad UI.
 
 Feature List:
 
-[x] Overview index: Nodes, Jobs, Allocations, and Evaluations
-[x] Node details
-[ ] Job details
-[ ] Evaluation details
-[ ] Allocation details
-[ ] Allocation File System Explorer
-[ ] Allocation File System Streamer
+- [x] Overview index: Nodes, Jobs, Allocations, and Evaluations
+- [x] Node details
+- [ ] Job details
+- [ ] Evaluation details
+- [ ] Allocation details
+- [ ] Allocation File System Explorer
+- [ ] Allocation File System Streamer
 
 ## Run Nomad UI
 
