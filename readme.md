@@ -1,6 +1,16 @@
 # Nomad UI
 
-A _very_ basic Nomad UI. Shows info and status for nodes and jobs.
+A basic, linkable, fast Nomad UI.
+
+Feature List:
+
+[x] Overview index: Nodes, Jobs, Allocations, and Evaluations
+[x] Node details
+[ ] Job details
+[ ] Evaluation details
+[ ] Allocation details
+[ ] Allocation File System Explorer
+[ ] Allocation File System Streamer
 
 ## Run Nomad UI
 
@@ -14,3 +24,16 @@ docker run -ti --rm --name=nui \
 ```
 
 That will run this in the foreground and make the UI available at `http://<your-ip>:8090`.
+
+## Development
+
+Pretty easy:
+
+```
+docker run -ti --rm --name=nui \
+ -e 'NOMAD_BASEURL=http://nomad-address:4646' \
+ -v `pwd`/html:/var/www/html \
+ php:7.0.10-apache
+```
+
+Magically easy, thanks PHP!
