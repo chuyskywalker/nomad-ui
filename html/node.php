@@ -76,7 +76,7 @@ $nodeStatsInfo = @json_decode($nodeStatsRaw);
             <td><?= $allocation->JobID ?></td>
             <td><?= $allocation->DesiredStatus ?></td>
             <td><?= $allocation->ClientStatus ?></td>
-            <td><?= interlink('eval', $allocation->EvalID) ?></td>
+            <td><?= interlink('evaluation', $allocation->EvalID) ?></td>
         </tr>
         <?php } ?>
     </tbody>
