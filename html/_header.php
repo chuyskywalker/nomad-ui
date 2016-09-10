@@ -51,6 +51,10 @@ function interlink($type, $val) {
             .table > tfoot > tr > td {
                 padding: 2px 8px;
             }
+
+            dl dd {
+                margin-left: 2em;
+            }
         </style>
 
     </head>
