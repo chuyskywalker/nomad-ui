@@ -58,6 +58,6 @@ function interlink($type, $val) {
         <div class="container theme-showcase" role="main">
 
             <div class="page-header">
-                <h1><?= $header ?: 'Nomad Info' ?></h1>
+                <h1><?= $header ?: 'Nomad Info' ?><?php if (!empty($header)) { ?> <a href="/">Home</a><?php } ?></h1>
             </div>
 

@@ -1,6 +1,5 @@
 <?php
 
-$header = 'Nomad Info';
 require '_header.php';
 
 $nodesRaw = @file_get_contents($nomadBaseUrl . '/v1/nodes');
