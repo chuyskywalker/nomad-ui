@@ -27,8 +27,34 @@ $allocationUrl = 'http://' . $nodeInfo->HTTPAddr . '/';
 </div>
 <?php } else { ?>
 
+<?php
+
+// find ze logs!
+
+$allocLogs = json_decode(file_get_contents($allocationUrl . '/v1/client/fs/ls/' . $allocationID .'?path=/alloc/logs'));
+foreach ($allocLogs as $file) {
+    if (stristr($file->Name, 'stderr')) {
+        $stderr = $file->Name;
+    }
+    elseif (stristr($file->Name, 'stdout')) {
+        $stdout = $file->Name;
+    }
+}
+?>
+
+<h2>stderr</h2>
+<pre><?= htmlspecialchars (
+    file_get_contents($allocationUrl . '/v1/client/fs/cat/' . $allocationID .'?path=/alloc/logs/' . $stderr)
+) ?></pre>
+
+<h2>stdout</h2>
+<pre><?= htmlspecialchars (
+    file_get_contents($allocationUrl . '/v1/client/fs/cat/' . $allocationID .'?path=/alloc/logs/' . $stdout)
+) ?></pre>
+
 <pre><?= print_r($allocationInfo) ; ?></pre>
 
+<?php /*
 <pre><?php
 print_r(json_decode(file_get_contents($allocationUrl . '/v1/client/fs/ls/' . $allocationID .'?path=/')))
 ?></pre>
@@ -38,11 +64,12 @@ print_r(json_decode(file_get_contents($allocationUrl . '/v1/client/fs/ls/' . $al
 ?></pre>
 
 <pre><?php
-print_r(json_decode(file_get_contents($allocationUrl . '/v1/client/fs/ls/' . $allocationID .'?path=/alloc/logs')))
+print_r()
 ?></pre>
 
 <pre><?php
 print_r(file_get_contents($allocationUrl . '/v1/client/fs/cat/' . $allocationID .'?path=/alloc/logs/STD_OUT_FILE_HERE'))
 ?></pre>
+*/ ?>
 
 <?php } ?>
