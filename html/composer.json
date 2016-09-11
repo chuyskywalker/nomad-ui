@@ -1,6 +1,5 @@
 {
     "require": {
-        "defuse/php-encryption": "^2.0",
         "twig/twig": "~1.0"
     },
     "autoload": {

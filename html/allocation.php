@@ -20,22 +20,21 @@ $allocationUrl = 'http://' . $nodeInfo->HTTPAddr . '/';
 
 // find the std:err/out files
 $allocLogs = json_decode(file_get_contents($allocationUrl . '/v1/client/fs/ls/' . $allocationID .'?path=/alloc/logs'));
+$c = new Nomad\Crypt();
 foreach ($allocLogs as $file) {
     if (stristr($file->Name, 'stderr')) {
-        // TODO: add encryption here
-        $stderr = base64_encode(json_encode([
+        $stderr = $c->encrypt([
             'address' => $nodeInfo->HTTPAddr,
             'allocationid' => $allocationID,
             'path' => '/alloc/logs/'. $file->Name,
-        ]));
+        ]);
     }
     elseif (stristr($file->Name, 'stdout')) {
-        // TODO: add encryption here
-        $stdout = base64_encode(json_encode([
+        $stdout = $c->encrypt([
             'address' => $nodeInfo->HTTPAddr,
             'allocationid' => $allocationID,
             'path' => '/alloc/logs/'. $file->Name,
-        ]));
+        ]);
     }
 }
 

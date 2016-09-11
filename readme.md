@@ -14,12 +14,12 @@ Feature List:
 
 ## Run Nomad UI
 
-You really only need to pass in the nomad url for this to work:
+You can run the dockerhub hosted image with just the Nomad URL and an ecryption key:
 
 ```
 docker run -ti --rm --name=nui \
  -p 8090:80 \
- -e 'NOMAD_BASEURL=http://nomad-address:4646' \
+ -e 'NOMAD_BASEURL=http://nomad.service.consul:4646' \
  chuyskywalker/nomad-ui
 ```
 
@@ -31,8 +31,9 @@ Pretty easy:
 
 ```
 docker build -t nui .
-docker run -ti --rm --name=nui \
- -e 'NOMAD_BASEURL=http://nomad-address:4646' \
+docker run -ti --rm -v $(pwd)/html:/app composer/composer install
+docker run -d --name=nui \
+ -e 'NOMAD_BASEURL=http://nomad.service.consul:4646' \
  -v `pwd`/html:/var/www/html \
  nui
 ```
