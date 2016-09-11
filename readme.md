@@ -8,8 +8,8 @@ Feature List:
 - [x] Node details
 - [ ] Job details
 - [ ] Evaluation details
-- [ ] Allocation details
-- [ ] Allocation File System Explorer
+- [x] Allocation details (Could use more flushing out, but functional now)
+- [x] Allocation File System Explorer
 - [x] Allocation File System Streamer
 
 ## Run Nomad UI

@@ -1,6 +1,6 @@
 {% extends "base.html.twig" %}
 
-{% block title %}Allocation: {{ allocationid }}{% endblock %}
+{% block title %}Allocation: {{ shortid }}{% endblock %}
 
 {% block content %}
 
@@ -12,44 +12,105 @@
 
 {% else %}
 
+    <h2>General Info</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Full ID</th>
+                <th>Created</th>
+                <th>JobID</th>
+                <th>Desired</th>
+                <th>Current</th>
+                <th>EvalID</th>
+                <th>Parent Job</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ allocation.ID }}</td>
+                <td nowrap>{{ (allocation.CreateTime//1000000000) | date('Y-m-d H:i:s') }}</td>
+                <td>{{ allocation.JobID }}</td>
+                <td>{{ allocation.DesiredStatus }}</td>
+                <td>{{ allocation.ClientStatus }}</td>
+                <td>{{ nomadelink(allocation.EvalID) }}</td>
+                <td>{{ nomadjlink(allocation.JobID) }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Allocation File Browser</h2>
     <script type="text/javascript">
-    function streamFileTo($selector, fileId) {
-        var offset = 0;
-        var limit = 5000;
-        var load = function(){
-            $.ajax({
-                dataType: 'text',
-                url: 'stream.php?fileid='+fileId+'&offset='+offset+'&limit='+limit,
-                success: function(data){
-                    $selector.append(data);
-                    offset += data.length;
-                    if ($selector.prev('p').find('input').is(':checked')) {
-                        $selector.scrollTop(function() { return this.scrollHeight; });
+        function streamFileTo($selector, fileId) {
+            var offset = 0;
+            var limit = 5000;
+            var load = function(){
+                $.ajax({
+                    dataType: 'text',
+                    url: 'stream.php?fileid='+fileId+'&offset='+offset+'&limit='+limit,
+                    success: function(data){
+                        $selector.append(data);
+                        offset += data.length;
+                        if ($selector.prev('p').find('input').is(':checked')) {
+                            $selector.scrollTop(function() { return this.scrollHeight; });
+                        }
+                        if (data.length == 0) {
+                            // No data to be had, we can slow down the loop
+                            setTimeout(load, 2500);
+                        } else {
+                            // either an @limit request, or partial data.
+                            // Either way, request again quickly
+                            setTimeout(load, 10);
+                        }
                     }
-                    if (data.length == 0) {
-                        // No data to be had, we can slow down the loop
-                        setTimeout(load, 2500);
-                    } else {
-                        // either an @limit request, or partial data.
-                        // Either way, request again quickly
-                        setTimeout(load, 10);
-                    }
-                }
-            });
+                });
+            }
+            load();
         }
-        load();
-    }
     </script>
 
-    <h2>stderr:</h2>
-    <p style="float: right; margin-top: -20px"><label><input id="stderr-scroll" type="checkbox" checked /> Auto-scroll</label></p>
-    <pre id="stderr" style="height: 500px; scroll: auto; clear: both"></pre>
-    <script type="text/javascript">streamFileTo($('#stderr'), '{{ stderr }}');</script>
-
-    <h2>stdout:</h2>
-    <p style="float: right; margin-top: -20px"><label><input id="stdout-scroll" type="checkbox" checked /> Auto-scroll</label></p>
-    <pre id="stdout" style="height: 500px; scroll: auto; clear: both"></pre>
-    <script type="text/javascript">streamFileTo($('#stdout'), '{{ stdout }}');</script>
+    <div class="row">
+        <div class="col-md-3">
+            <h3>Files</h3>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>File</th>
+                        <th>Size</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if parent %}
+                    <tr>
+                        <td><a href="allocation.php?id={{ allocation.ID }}&path={{ parent }}">..</a></td>
+                        <td>-</td>
+                    </tr>
+                    {% endif %}
+                    {% for file in filelist %}
+                    <tr>
+                        {% if file.IsDir %}
+                        <td><a href="allocation.php?id={{ allocation.ID }}&path={{ file.pathQuery }}">{{ file.Name }}/</a></td>
+                        <td>-</td>
+                        {% else %}
+                        <td><a href="allocation.php?id={{ allocation.ID }}&path={{ currentPath }}&file={{ file.fileQuery }}">{{ file.Name }}</a></td>
+                        <td>{{ file.Size }}</td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-9">
+            {% if file %}
+                <h3>{{ file }}</h3>
+                <p style="float: right; margin-top: -20px"><label><input type="checkbox" checked /> Auto-scroll</label></p>
+                <pre id="file-content" style="height: 500px; scroll: auto; clear: both"></pre>
+                <script type="text/javascript">streamFileTo($('#file-content'), '{{ filestream }}');</script>
+            {% else %}
+                <h3>&larr; </h3>
+                <p>Select a file</p>
+            {% endif %}
+        </div>
+    </div>
 
 {% endif %}
 
