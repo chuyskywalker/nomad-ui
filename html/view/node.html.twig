@@ -1,0 +1,109 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Node: {{ nodeid }}{% endblock %}
+
+{% block content %}
+
+{% if noinfo %}
+
+    <div class="alert alert-danger">
+        <strong>Error</strong> Could not fetch node info
+    </div>
+
+{% else %}
+
+    <h2>General Info</h2>
+    <table class="table table-bordered">
+        <tbody>
+            <tr><th>ID</th><td>{{ nodeinfo.ID }}</td></tr>
+            <tr><th>Name</th><td>{{ nodeinfo.Name }}</td></tr>
+            <tr><th>Datacenter</th><td>{{ nodeinfo.Datacenter }}</td></tr>
+            <tr><th>Address</th><td>{{ nodeinfo.HTTPAddr }}</td></tr>
+            <tr><th>Nomad Version</th><td>{{ attribute(nodeinfo.Attributes, 'nomad.version') }}</td></tr>
+            <tr><th>Processor</th><td>{{ attribute(nodeinfo.Attributes, 'cpu.modelname') }}</td></tr>
+            <tr><th>Cores</th><td>{{ attribute(nodeinfo.Attributes, 'cpu.numcores') }}</td></tr>
+            <tr><th>Nomad Version</th><td>{{ attribute(nodeinfo.Attributes, 'nomad.version') }}</td></tr>
+            <tr><th>CPU Frequency</th><td>{{ attribute(nodeinfo.Attributes, 'cpu.frequency') | number_format(0) }}</td></tr>
+            <tr><th>Total Compute</th><td>{{ attribute(nodeinfo.Attributes, 'cpu.totalcompute') | number_format(0) }}</td></tr>
+            <tr><th>Ram (gb)</th><td>{{ (nodeinfo.Resources.MemoryMB / 1024) | number_format(0) }}</td></tr>
+            <tr><th>Disk (gb)</th><td>{{ (nodeinfo.Resources.DiskMB / 1024) | number_format(0) }}</td></tr>
+        </tbody>
+    </table>
+
+    {{ include('allocations.html.twig') }}
+
+    <h2>System Metrics</h2>
+    <p></p>
+
+    <h3>CPU</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>CPU</th>
+                <th>User</th>
+                <th>System</th>
+                <th>Idle</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cpu in stats.CPU %}
+            <tr>
+                <td>{{ cpu.CPU }}</td>
+                <td>{{ cpu.User | number_format(2) }}</td>
+                <td>{{ cpu.System | number_format(2) }}</td>
+                <td>{{ cpu.Idle | number_format(2) }}</td>
+                <td>{{ cpu.Total | number_format(2) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Disk</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Mount</th>
+                <th>Device</th>
+                <th>Available (gb)</th>
+                <th>Used (gb)</th>
+                <th>inodes used</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for disk in stats.DiskStats %}
+            <tr>
+                <td>{{ disk.Mountpoint }}</td>
+                <td>{{ disk.Device }}</td>
+                <td>{{ (disk.Available/1024/1024/1024) | number_format(2) }}</td>
+                <td>{{ (disk.Used/1024/1024/1024) | number_format(2) }}
+                   ({{ (disk.UsedPercent) | number_format(2) }}%)</td>
+                <td>{{ disk.InodesUsedPercent | number_format(2) }}%</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Ram</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Used</th>
+                <th>Free</th>
+                <th>Available</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ (stats.Memory.Used/1024/1024/1024) | number_format(2) }}</td>
+                <td>{{ (stats.Memory.Free/1024/1024/1024) | number_format(2) }}</td>
+                <td>{{ (stats.Memory.Available/1024/1024/1024) | number_format(2) }}</td>
+                <td>{{ (stats.Memory.Total/1024/1024/1024) | number_format(2) }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+{% endif %}
+
+{% endblock %}

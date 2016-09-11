@@ -1,0 +1,51 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Allocation: {{ allocationid }}{% endblock %}
+
+{% block content %}
+
+{% if noinfo %}
+
+    <div class="alert alert-danger">
+        <strong>Error</strong> Could not fetch allocation info
+    </div>
+
+{% else %}
+
+    <script type="text/javascript">
+    function streamFileTo($selector, fileId) {
+        var offset = 0;
+        var limit = 5000;
+        var load = function(){
+            $.ajax({
+                dataType: 'text',
+                url: 'stream.php?fileid='+fileId+'&offset='+offset+'&limit='+limit,
+                success: function(data){
+                    $selector.append(data);
+                    offset += data.length;
+                    if (data.length == 0) {
+                        // No data to be had, we can slow down the loop
+                        setTimeout(load, 2500);
+                    } else {
+                        // either an @limit request, or partial data.
+                        // Either way, request again quickly
+                        setTimeout(load, 10);
+                    }
+                }
+            });
+        }
+        load();
+    }
+    </script>
+
+    <h2>stderr:</h2>
+    <pre id="stderr" style="height: 500px; scroll: auto"></pre>
+    <script type="text/javascript">streamFileTo($('#stderr'), '{{ stderr }}');</script>
+
+    <h2>stdout:</h2>
+    <pre id="stdout" style="height: 500px; scroll: auto"></pre>
+    <script type="text/javascript">streamFileTo($('#stdout'), '{{ stdout }}');</script>
+
+{% endif %}
+
+{% endblock %}
