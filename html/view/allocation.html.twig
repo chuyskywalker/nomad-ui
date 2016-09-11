@@ -23,6 +23,9 @@
                 success: function(data){
                     $selector.append(data);
                     offset += data.length;
+                    if ($selector.prev('p').find('input').is(':checked')) {
+                        $selector.scrollTop(function() { return this.scrollHeight; });
+                    }
                     if (data.length == 0) {
                         // No data to be had, we can slow down the loop
                         setTimeout(load, 2500);
@@ -39,11 +42,13 @@
     </script>
 
     <h2>stderr:</h2>
-    <pre id="stderr" style="height: 500px; scroll: auto"></pre>
+    <p style="float: right; margin-top: -20px"><label><input id="stderr-scroll" type="checkbox" checked /> Auto-scroll</label></p>
+    <pre id="stderr" style="height: 500px; scroll: auto; clear: both"></pre>
     <script type="text/javascript">streamFileTo($('#stderr'), '{{ stderr }}');</script>
 
     <h2>stdout:</h2>
-    <pre id="stdout" style="height: 500px; scroll: auto"></pre>
+    <p style="float: right; margin-top: -20px"><label><input id="stdout-scroll" type="checkbox" checked /> Auto-scroll</label></p>
+    <pre id="stdout" style="height: 500px; scroll: auto; clear: both"></pre>
     <script type="text/javascript">streamFileTo($('#stdout'), '{{ stdout }}');</script>
 
 {% endif %}
