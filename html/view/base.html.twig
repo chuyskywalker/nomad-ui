@@ -42,7 +42,7 @@
     <body role="document">
         <div class="container theme-showcase" role="main">
             <div class="page-header">
-                <h1>{{ block('title') }} <a href="/">Home</a></h1>
+                <h1>{{ block('title') }}{% if block('title') != 'Nomad Cluster Overview' %} <a href="/">Home</a>{% endif %}</h1>
             </div>
             {% block content %}{% endblock %}
         </div>
