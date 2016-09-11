@@ -10,7 +10,7 @@ Feature List:
 - [ ] Evaluation details
 - [ ] Allocation details
 - [ ] Allocation File System Explorer
-- [ ] Allocation File System Streamer
+- [x] Allocation File System Streamer
 
 ## Run Nomad UI
 
@@ -30,10 +30,11 @@ That will run this in the foreground and make the UI available at `http://<your-
 Pretty easy:
 
 ```
+docker build -t nui .
 docker run -ti --rm --name=nui \
  -e 'NOMAD_BASEURL=http://nomad-address:4646' \
  -v `pwd`/html:/var/www/html \
- php:7.0.10-apache
+ nui
 ```
 
 Magically easy, thanks PHP!
