@@ -9,7 +9,7 @@ class Nomad {
     }
 
     public static function getTwig() {
-        $loader = new \Twig_Loader_Filesystem(__DIR__.'/../../view');
+        $loader = new \Twig_Loader_Filesystem(__DIR__.'/../view');
         $twig = new \Twig_Environment($loader, array(
             'cache' => '/tmp',
             'debug' => true,
