@@ -1,0 +1,26 @@
+
+<h2>Evaluations ({{ evaluations | length }})</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>JobID</th>
+            <th>Type</th>
+            <th>Priority</th>
+            <th>NodeID</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for evaluation in evaluations %}
+        <tr>
+            <td>{{ nomadelink(evaluation.ID) }}</td>
+            <td>{{ evaluation.JobID }}</td>
+            <td>{{ evaluation.Type }}</td>
+            <td>{{ evaluation.Priority }}</td>
+            <td>{{ nomadnlink(evaluation.NodeID) }}</td>
+            <td>{{ evaluation.Status }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

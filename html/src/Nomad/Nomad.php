@@ -15,9 +15,10 @@ class Nomad {
             'debug' => true,
             'strict_variables' => true,
         ));;
-        $twig->addFunction(new \Twig_SimpleFunction('nomandalink', ['Nomad\\Link', 'a'], ['is_safe' => ['html']]));
-        $twig->addFunction(new \Twig_SimpleFunction('nomandelink', ['Nomad\\Link', 'e'], ['is_safe' => ['html']]));
-        $twig->addFunction(new \Twig_SimpleFunction('nomandnlink', ['Nomad\\Link', 'n'], ['is_safe' => ['html']]));
+        $twig->addFunction(new \Twig_SimpleFunction('nomadalink', ['Nomad\\Link', 'a'], ['is_safe' => ['html']]));
+        $twig->addFunction(new \Twig_SimpleFunction('nomadelink', ['Nomad\\Link', 'e'], ['is_safe' => ['html']]));
+        $twig->addFunction(new \Twig_SimpleFunction('nomadnlink', ['Nomad\\Link', 'n'], ['is_safe' => ['html']]));
+        $twig->addFunction(new \Twig_SimpleFunction('nomadjlink', ['Nomad\\Link', 'j'], ['is_safe' => ['html']]));
         return $twig;
     }
 

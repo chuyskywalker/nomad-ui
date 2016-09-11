@@ -1,0 +1,71 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Nomad Cluster Overview{% endblock %}
+
+{% block content %}
+
+{% if noinfo %}
+
+    <div class="alert alert-danger">
+        <strong>Error</strong> Could not fetch node info!
+    </div>
+
+{% else %}
+
+    <p>@ {{ baseurl }}</p>
+    
+    <h2>Nodes</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Datacenter</th>
+                <th>Drain</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for node in nodes %}
+            <tr>
+                <td>{{ nomadnlink(node.ID) }}</td>
+                <td>{{ node.Name }}</td>
+                <td>{{ node.Datacenter }}</td>
+                <td>{{ node.Drain }}</td>
+                <td>{{ node.Status }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <h2>Jobs</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Priority</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for job in jobs %}
+            <tr>
+                <td>{{ nomadjlink(job.ID) }}</td>
+                <td>{{ job.Name }}</td>
+                <td>{{ job.Type }}</td>
+                <td>{{ job.Priority }}</td>
+                <td>{{ job.Status }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {{ include('allocations.html.twig') }}
+
+    {{ include('evaluations.html.twig') }}
+
+{% endif %}
+
+{% endblock %}

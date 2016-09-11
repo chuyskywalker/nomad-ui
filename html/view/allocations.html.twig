@@ -13,12 +13,12 @@
     <tbody>
         {% for allocation in allocations %}
         <tr>
-            <td>{{ nomandalink(allocation.ID) }}</td>
+            <td>{{ nomadalink(allocation.ID) }}</td>
             <td nowrap>{{ (allocation.CreateTime//1000000000) | date('Y-m-d H:i:s') }}</td>
             <td>{{ allocation.JobID }}</td>
             <td>{{ allocation.DesiredStatus }}</td>
             <td>{{ allocation.ClientStatus }}</td>
-            <td>{{ nomandelink(allocation.EvalID) }}</td>
+            <td>{{ nomadelink(allocation.EvalID) }}</td>
         </tr>
         {% endfor %}
     </tbody>

@@ -1,6 +1,8 @@
 <?php
 
-require '_header.php';
+require 'vendor/autoload.php';
+
+$nomadBaseUrl = Nomad\Nomad::getAddress();
 
 $nodesRaw = @file_get_contents($nomadBaseUrl . '/v1/nodes');
 $jobsRaw  = @file_get_contents($nomadBaseUrl . '/v1/jobs');
@@ -12,7 +14,18 @@ $jobs  = @json_decode($jobsRaw);
 $allocs= @json_decode($allocsRaw);
 $evals = @json_decode($evalsRaw);
 
-?>
+$twig = Nomad\Nomad::getTwig();
+
+echo $twig->render('index.html.twig', array(
+    'noinfo' => empty($nodes),
+    'baseurl' => $nomadBaseUrl,
+    'nodes' => $nodes,
+    'jobs' => $jobs,
+    'allocations' => $allocs,
+    'evaluations' => $evals,
+));
+
+/*
 
 <p>@ <?= $nomadBaseUrl ?></p>
 
@@ -124,3 +137,5 @@ $evals = @json_decode($evalsRaw);
         <?php } ?>
     </tbody>
 </table>
+
+*/

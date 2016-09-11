@@ -2,6 +2,7 @@
 
 namespace Nomad;
 
+// TODO: ALL THE ESCAPING
 class Link {
 
     public function a($text) {
@@ -14,6 +15,10 @@ class Link {
 
     public function e($text) {
         return '<a href="evaluation.php?id=' . $text . '" title="' . $text . '">' . explode('-', $text)[0] . '</a>';
+    }
+
+    public function j($text) {
+        return '<a href="job.php?id=' . $text . '" title="' . $text . '">' . $text . '</a>';
     }
 
 }
