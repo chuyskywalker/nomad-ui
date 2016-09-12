@@ -56,6 +56,11 @@
                     <tr><th>Name</th><td>{{ tg.Name }}</td></tr>
                     <tr><th>Count</th><td>{{ tg.Count }}</td></tr>
                     <tr><th>Constraints</th><td>{% set constraints = tg.Constraints %}{{ include('constraints.html.twig') }}</td></tr>
+                    <tr><th>Latest&nbsp;Alloc</th><td>
+                        {% for aid in tg.AllocationIDs %}
+                        {{ nomadalink(aid) }}{% if not loop.last %},{% endif %}
+                        {% endfor %}
+                    </td></tr>
                 </tbody>
             </table>
         </div>
@@ -98,8 +103,43 @@
     </div>
     {% endfor %}
 
+    <h2>Allocation History</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Time</th>
+                <th>Group[Instance]:Task</th>
+                <th>Alloc/Eval/Node</th>
+                <th>Type</th>
+                <th>Message</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ah in allocationHistory %}
+            <tr>
+                <td nowrap>{{ (ah.Time//1000000000) | date('Y-m-d H:i:s') }}</td>
+                <td nowrap>{{ ah.Name }}:{{ ah.Task }}</td>
+                <td nowrap>{{ nomadalink(ah.ID) }}/{{ nomadelink(ah.EvalID) }}/{{ nomadnlink(ah.NodeID) }}</td>
+                <td nowrap>{{ ah.Type }}</td>
+                <td>
+                    {# any of these, usually only one anyway #}
+                    {{ ah.RestartReason }}
+                    {{ ah.DriverError }}
+                    {{ ah.KillError }}
+                    {{ ah.Message }}
+                    {{ ah.DownloadError }}
+                    {{ ah.ValidationError }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {#{{ dump(allocationHistory) }}#}
+
+    {#{{ dump(allocations) }}#}
     {{ include('allocations.html.twig') }}
 
+    {#{{ dump(evaluations) }}#}
     {{ include('evaluations.html.twig') }}
 
 {% endif %}
