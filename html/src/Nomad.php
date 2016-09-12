@@ -20,6 +20,14 @@ class Nomad {
         $twig->addFunction(new \Twig_SimpleFunction('nomadnlink', ['Nomad\\Link', 'n'], ['is_safe' => ['html']]));
         $twig->addFunction(new \Twig_SimpleFunction('nomadjlink', ['Nomad\\Link', 'j'], ['is_safe' => ['html']]));
         $twig->addFunction(new \Twig_SimpleFunction('dump', function($val) { return '<pre>' . print_r($val,1) . '</pre>'; }, ['is_safe' => ['html']]));
+        $twig->addFilter(new \Twig_SimpleFilter('human_filesize', function($bytes, $decimals = 2) {
+            if ($bytes == 0) {
+                return 0;
+            }
+            $size = array('B','kB','MB','GB','TB','PB','EB','ZB','YB');
+            $factor = floor((strlen($bytes) - 1) / 3);
+            return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$size[$factor];
+        }));
         return $twig;
     }
 

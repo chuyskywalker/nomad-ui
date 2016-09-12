@@ -92,7 +92,7 @@
                         <td>-</td>
                         {% else %}
                         <td><a href="allocation.php?id={{ allocation.ID }}&path={{ currentPath }}&file={{ file.fileQuery }}">{{ file.Name }}</a></td>
-                        <td>{{ file.Size }}</td>
+                        <td>{{ file.Size | human_filesize }}</td>
                         {% endif %}
                     </tr>
                     {% endfor %}
