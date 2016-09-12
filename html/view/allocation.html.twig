@@ -48,7 +48,7 @@
                     dataType: 'text',
                     url: 'stream.php?fileid='+fileId+'&offset='+offset+'&limit='+limit,
                     success: function(data){
-                        $selector.append(data);
+                        $selector.append(document.createTextNode(data));
                         offset += data.length;
                         if ($selector.prev('p').find('input').is(':checked')) {
                             $selector.scrollTop(function() { return this.scrollHeight; });
