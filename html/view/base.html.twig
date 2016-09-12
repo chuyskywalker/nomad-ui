@@ -10,6 +10,18 @@
         <script src="static/jquery.min.js"></script>
         <script src="static/bootstrap.min.js"></script>
         <style>
+
+            html, body, .container {
+                min-height: 100vh;
+            }
+            body {
+                xbackground-image: url(https://www.nomadproject.io/assets/images/nomad-giant-7fcb23ff.jpg);
+                background-size: 1500px;
+            }
+            .container {
+                /*background-color: rgba(50,70,50,.750);*/
+            }
+
             * {
                 font-family: monospace;
                 font-size: 14px;
@@ -37,6 +49,24 @@
             dl dd {
                 margin-left: 2em;
             }
+
+            /*body {*/
+            /*    position: relative;*/
+            /*}*/
+            /* You could use :after - it doesn't really matter */
+            /*body:before {*/
+            /*    content: ' ';*/
+            /*    display: block;*/
+            /*    position: absolute;*/
+            /*    left: 0;*/
+            /*    top: 0;*/
+            /*    width: 100%;*/
+            /*    height: 100%;*/
+            /*    z-index: -1;*/
+            /*    opacity: 0.1;*/
+            /*    background-image: url('https://www.nomadproject.io/assets/images/nomad-giant-7fcb23ff.jpg');*/
+            /*}*/
+
         </style>
     </head>
     <body role="document">
