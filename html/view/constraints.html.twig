@@ -1,0 +1,5 @@
+{% for constraint in constraints %}
+{{ constraint.LTarget }} {{ constraint.Operand }} {{ constraint.RTarget }}<br/>
+{% else %}
+None
+{% endfor %}

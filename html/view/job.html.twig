@@ -1,50 +1,107 @@
-<!doctype html>
-<html class="no-js" lang="">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>{% block title %}{% endblock %} - Nomad Info</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="static/bootstrap.min.css" />
-        <link rel="stylesheet" href="static/bootstrap-theme-superhero.css">
-        <script src="static/jquery.min.js"></script>
-        <script src="static/bootstrap.min.js"></script>
-        <style>
-            * {
-                font-family: monospace;
-                font-size: 14px;
-            }
-            td.moreInfo {
-                display: none;
-            }
+{% extends "base.html.twig" %}
 
-            td ul{
-                padding: 0;
-                padding-left: 10px;
-            }
-            tr:target {
-                background: rgba(16, 255, 0, 0.15);
-            }
-            .table > thead > tr > th,
-            .table > tbody > tr > th,
-            .table > tfoot > tr > th,
-            .table > thead > tr > td,
-            .table > tbody > tr > td,
-            .table > tfoot > tr > td {
-                padding: 2px 8px;
-            }
+{% block title %}Job: {{ shortid }}{% endblock %}
 
-            dl dd {
-                margin-left: 2em;
-            }
-        </style>
-    </head>
-    <body role="document">
-        <div class="container theme-showcase" role="main">
-            <div class="page-header">
-                <h1>{% block title %}{% endblock %}<a href="/">Home</a></h1>
-            </div>
-            {% block content %}{% endblock %}
+{% block content %}
+
+{% if noinfo %}
+
+    <div class="alert alert-danger">
+        <strong>Error</strong> Could not fetch job info
+    </div>
+
+{% else %}
+
+    <div class="row">
+        <div class="col-md-6">
+            <h2>General Info</h2>
+            <table class="table table-bordered">
+                <tbody>
+                    <tr><th>ID</th><td>{{ job.ID }}</td></tr>
+                    <tr><th>Name</th><td>{{ job.Name }}</td></tr>
+                    <tr><th>Datacenters</th><td>{{ job.Datacenters | join(', ') }}</td></tr>
+                    <tr><th>Type</th><td>{{ job.Type }}</td></tr>
+                    <tr><th>Status</th><td>{{ job.Status }}</td></tr>
+                    <tr><th>Priority</th><td>{{ job.Priority }}</td></tr>
+                    <tr><th>Periodic</th><td>{% if job.Periodic %}Yes{% else %}No{% endif %}</td></tr>
+                    <tr><th>AllAtOnce</th><td>{% if job.AllAtOnce %}Yes{% else %}No{% endif %}</td></tr>
+                    <tr><th>Update</th><td>Stagger: {{ job.Update.Stagger }}, Parallel: {{ job.Update.MaxParallel }}</td></tr>
+                    <tr><th>Constraints</th><td>{% set constraints = job.Constraints %}{{ include('constraints.html.twig') }}</td></tr>
+                </tbody>
+            </table>
         </div>
-    </body>
-</html>
+        <div class="col-md-6">
+            <h2>Task Overview</h2>
+            <ul>
+                {% for tg in job.TaskGroups %}
+                    <li>{{ tg.Name }}
+                    <ul>
+                    {% for t in tg.Tasks %}
+                        <li>{{ t.Name }}</li>
+                    {% endfor %}
+                    </ul>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <h2>Tasks</h2>
+
+    {% for tg in job.TaskGroups %}
+    <div class="row">
+        <div class="col-md-4">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr><th>Name</th><td>{{ tg.Name }}</td></tr>
+                    <tr><th>Count</th><td>{{ tg.Count }}</td></tr>
+                    <tr><th>Constraints</th><td>{% set constraints = tg.Constraints %}{{ include('constraints.html.twig') }}</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-8">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Constraints</th>
+                        <th>Driver</th>
+                        <th>Driver Info</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for t in tg.Tasks %}
+                    <tr>
+                        <td>{{ t.Name }}</td>
+                        <td>{% set constraints = t.Constraints %}{{ include('constraints.html.twig') }}</td>
+                        <td>{{ t.Driver }}</td>
+                        <td>
+                            {% if t.Driver == 'docker' %}
+                                {{ t.Config.image }}
+                            {% elseif t.Driver == 'rkt' %}
+                                {{ t.Config.image }}
+                            {% elseif t.Driver == 'java' %}
+                                {{ t.Config.jar_path }} {{ t.Config.args | join(' ') }}
+                            {% elseif t.Driver == 'exec' %}
+                                {{ t.Config.command }} {{ t.Config.args | join(' ') }}
+                            {% elseif t.Driver == 'raw_exec' %}
+                                {{ t.Config.command }} {{ t.Config.args | join(' ') }}
+                            {% elseif t.Driver == 'Qemu' %}
+                                {{ t.Config.image_path }} {{ t.Config.args | join(' ') }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endfor %}
+
+    {{ include('allocations.html.twig') }}
+
+    {{ include('evaluations.html.twig') }}
+
+{% endif %}
+
+{% endblock %}
