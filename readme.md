@@ -6,11 +6,11 @@ Feature List:
 
 - [x] Overview index: Nodes, Jobs, Allocations, and Evaluations
 - [x] Node details
-- [ ] Job details
+- [x] Job details
 - [ ] Evaluation details
-- [x] Allocation details (Could use more flushing out, but functional now)
+- [x] Allocation details
 - [x] Allocation File System Explorer
-- [x] Allocation File System Streamer
+- [x] Allocation File Streamer
 
 ## Run Nomad UI
 
