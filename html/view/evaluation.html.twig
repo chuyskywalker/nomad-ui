@@ -1,0 +1,20 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Evaluation: {{ shortid }}{% endblock %}
+
+{% block content %}
+
+{% if noinfo %}
+
+    <div class="alert alert-danger">
+        <strong>Error</strong> Could not fetch evaluation info
+    </div>
+
+{% else %}
+
+    {{ dump(evaluation) }}
+    {{ dump(allocations) }}
+
+{% endif %}
+
+{% endblock %}

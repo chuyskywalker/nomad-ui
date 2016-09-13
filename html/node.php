@@ -23,6 +23,7 @@ $twig = Nomad\Nomad::getTwig();
 
 echo $twig->render('node.html.twig', array(
     'nodeid' => $nodeID,
+    'shortid' => explode('-',$nodeID)[0],
     'noinfo' => empty($nodeInfo),
     'nodeinfo' => $nodeInfo,
     'allocations' => $nodeAllocationsInfo,

@@ -1,0 +1,57 @@
+#menu-toggle {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+.sidebar-brand {
+    padding-left: 50px;
+    padding-top: 5px;
+}
+.cube {
+    -webkit-transform: translate(-45px, 30px);
+    -ms-transform: translate(-45px, 30px);
+    transform: translate(-45px, 30px);
+}
+.cube .face {
+    moz-transform-origin: 0 0;
+    -o-transform-origin: 0 0;
+    -ms-transform-origin: 0 0;
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
+    position: absolute;
+    height: 20px;
+    width: 20px;
+}
+.cube .face.top {
+    background-color: #56cdad;
+    -webkit-transform: rotate(210deg) skewX(-30deg) scaleY(0.864);
+    -ms-transform: rotate(210deg) skewX(-30deg) scaleY(0.864);
+    transform: rotate(210deg) skewX(-30deg) scaleY(0.864);
+}
+.cube .face.left {
+    background-color: #449b82;
+    -webkit-transform: rotate(90deg) skewX(-30deg) scaleY(0.864);
+    -ms-transform: rotate(90deg) skewX(-30deg) scaleY(0.864);
+    transform: rotate(90deg) skewX(-30deg) scaleY(0.864);
+}
+.cube .face.right {
+    background-color: #9bdb9c;
+    -webkit-transform: rotate(-30deg) skewX(-30deg) scaleY(0.864);
+    -ms-transform: rotate(-30deg) skewX(-30deg) scaleY(0.864);
+    transform: rotate(-30deg) skewX(-30deg) scaleY(0.864);
+}
+.sidebar-nav {
+    margin-top: 15px;
+}
+h1.page-header {
+    margin-top: 10px;
+}
+@media (min-width: 768px) {
+    #page-content-wrapper {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+a {
+    color: #33977c;
+}

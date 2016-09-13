@@ -1,0 +1,24 @@
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Created</th>
+            <th>JobID</th>
+            <th>Desired</th>
+            <th>Current</th>
+            <th>EvalID</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for allocation in allocations %}
+        <tr>
+            <td>{{ nomadalink(allocation.ID) }}</td>
+            <td nowrap>{{ (allocation.CreateTime//1000000000) | date('Y-m-d H:i:s') }}</td>
+            <td>{{ nomadjlink(allocation.JobID) }}</td>
+            <td>{{ allocation.DesiredStatus }}</td>
+            <td>{{ allocation.ClientStatus }}</td>
+            <td>{{ nomadelink(allocation.EvalID) }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

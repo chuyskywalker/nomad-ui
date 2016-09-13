@@ -1,7 +1,6 @@
 <?php
 
-$header = 'Evaluation Info';
-require '_header.php';
+require 'vendor/autoload.php';
 
 if ($_GET['id'] && preg_match('/^[a-zA-Z0-9-]+$/', $_GET['id'])) {
     $evaluationID = $_GET['id'];
@@ -9,21 +8,19 @@ if ($_GET['id'] && preg_match('/^[a-zA-Z0-9-]+$/', $_GET['id'])) {
     return;
 }
 
-$evaluationRaw = @file_get_contents($nomadBaseUrl . '/v1/evaluation/' . $evaluationID);
-$evaluationInfo = @json_decode($evaluationRaw);
+$nomadBaseUrl = Nomad\Nomad::getAddress();
+$items = Nomad\Nomad::multiRequest([
+    $nomadBaseUrl . '/v1/evaluation/' . $evaluationID,
+    $nomadBaseUrl . '/v1/evaluation/' . $evaluationID . '/allocations',
+]);
+$evaluationInfo           = @json_decode($items[0]);
+$evaluationAllocationInfo = @json_decode($items[1]);
 
-$evaluationAllocationRaw = @file_get_contents($nomadBaseUrl . '/v1/evaluation/' . $evaluationID . '/allocations');
-$evaluationAllocationInfo = @json_decode($evaluationAllocationRaw);
-
-?>
-
-<?php if (empty($evaluationInfo)) { ?>
-<div class="alert alert-danger">
-    <strong>Error</strong> Could not fetch job/node status(es)
-</div>
-<?php } else { ?>
-
-<pre><?= print_r($evaluationInfo) ; ?></pre>
-<pre><?= print_r($evaluationAllocationInfo) ; ?></pre>
-
-<?php } ?>
+$twig = Nomad\Nomad::getTwig();
+echo $twig->render('evaluation.html.twig', array(
+    'shortid' => explode('-', $evaluationID)[0],
+    'evaluationid' => $evaluationID,
+    'noinfo' => empty($evaluationInfo),
+    'evaluation' => $evaluationInfo,
+    'allocations' => $evaluationAllocationInfo,
+));

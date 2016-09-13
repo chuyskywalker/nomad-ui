@@ -26,7 +26,7 @@
                     <tr><th>Periodic</th><td>{% if job.Periodic %}Yes{% else %}No{% endif %}</td></tr>
                     <tr><th>AllAtOnce</th><td>{% if job.AllAtOnce %}Yes{% else %}No{% endif %}</td></tr>
                     <tr><th>Update</th><td>Stagger: {{ job.Update.Stagger }}, Parallel: {{ job.Update.MaxParallel }}</td></tr>
-                    <tr><th>Constraints</th><td>{% set constraints = job.Constraints %}{{ include('constraints.html.twig') }}</td></tr>
+                    <tr><th>Constraints</th><td>{% set constraints = job.Constraints %}{{ include('partial/constraints.html.twig') }}</td></tr>
                 </tbody>
             </table>
         </div>
@@ -55,7 +55,7 @@
                 <tbody>
                     <tr><th>Name</th><td>{{ tg.Name }}</td></tr>
                     <tr><th>Count</th><td>{{ tg.Count }}</td></tr>
-                    <tr><th>Constraints</th><td>{% set constraints = tg.Constraints %}{{ include('constraints.html.twig') }}</td></tr>
+                    <tr><th>Constraints</th><td>{% set constraints = tg.Constraints %}{{ include('partial/constraints.html.twig') }}</td></tr>
                     <tr><th>Latest&nbsp;Alloc</th><td>
                         {% for aid in tg.AllocationIDs %}
                         {{ nomadalink(aid) }}{% if not loop.last %},{% endif %}
@@ -78,7 +78,7 @@
                     {% for t in tg.Tasks %}
                     <tr>
                         <td>{{ t.Name }}</td>
-                        <td>{% set constraints = t.Constraints %}{{ include('constraints.html.twig') }}</td>
+                        <td>{% set constraints = t.Constraints %}{{ include('partial/constraints.html.twig') }}</td>
                         <td>{{ t.Driver }}</td>
                         <td>
                             {% if t.Driver == 'docker' %}
@@ -108,8 +108,10 @@
         <thead>
             <tr>
                 <th>Time</th>
+                <th>Alloc</th>
+                <th>Eval</th>
+                <th>Node</th>
                 <th>Group[Instance]:Task</th>
-                <th>Alloc/Eval/Node</th>
                 <th>Type</th>
                 <th>Message</th>
             </tr>
@@ -118,8 +120,10 @@
             {% for ah in allocationHistory %}
             <tr>
                 <td nowrap>{{ (ah.Time//1000000000) | date('Y-m-d H:i:s') }}</td>
+                <td nowrap>{{ nomadalink(ah.ID) }}</td>
+                <td nowrap>{{ nomadelink(ah.EvalID) }}</td>
+                <td nowrap>{{ nomadnlink(ah.NodeID) }}</td>
                 <td nowrap>{{ ah.Name }}:{{ ah.Task }}</td>
-                <td nowrap>{{ nomadalink(ah.ID) }}/{{ nomadelink(ah.EvalID) }}/{{ nomadnlink(ah.NodeID) }}</td>
                 <td nowrap>{{ ah.Type }}</td>
                 <td>
                     {# any of these, usually only one anyway #}
@@ -137,10 +141,12 @@
     {#{{ dump(allocationHistory) }}#}
 
     {#{{ dump(allocations) }}#}
-    {{ include('allocations.html.twig') }}
+    <h2>Allocations ({{ allocations | length }})</h2>
+    {{ include('partial/allocations.html.twig') }}
 
     {#{{ dump(evaluations) }}#}
-    {{ include('evaluations.html.twig') }}
+    <h2>Evaluations ({{ evaluations | length }})</h2>
+    {{ include('partial/evaluations.html.twig') }}
 
 {% endif %}
 

@@ -1,6 +1,6 @@
 {% extends "base.html.twig" %}
 
-{% block title %}Node: {{ nodeid }}{% endblock %}
+{% block title %}Node: {{ shortid }}{% endblock %}
 
 {% block content %}
 
@@ -30,7 +30,8 @@
         </tbody>
     </table>
 
-    {{ include('allocations.html.twig') }}
+    <h2>Allocations ({{ allocations | length }})</h2>
+    {{ include('partial/allocations.html.twig') }}
 
     <h2>System Metrics</h2>
     <p></p>

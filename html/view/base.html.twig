@@ -6,75 +6,42 @@
         <title>{% block title %}{% endblock %} - Nomad Info</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="static/bootstrap.min.css" />
-        <link rel="stylesheet" href="static/bootstrap-theme-superhero.css">
+        <link rel="stylesheet" href="static/simple-sidebar.css">
+        <link rel="stylesheet" href="static/nomad.css">
         <script src="static/jquery.min.js"></script>
         <script src="static/bootstrap.min.js"></script>
-        <style>
-
-            html, body, .container {
-                min-height: 100vh;
-            }
-            body {
-                xbackground-image: url(https://www.nomadproject.io/assets/images/nomad-giant-7fcb23ff.jpg);
-                background-size: 1500px;
-            }
-            .container {
-                /*background-color: rgba(50,70,50,.750);*/
-            }
-
-            * {
-                font-family: monospace;
-                font-size: 14px;
-            }
-            td.moreInfo {
-                display: none;
-            }
-
-            td ul{
-                padding: 0;
-                padding-left: 10px;
-            }
-            tr:target {
-                background: rgba(16, 255, 0, 0.15);
-            }
-            .table > thead > tr > th,
-            .table > tbody > tr > th,
-            .table > tfoot > tr > th,
-            .table > thead > tr > td,
-            .table > tbody > tr > td,
-            .table > tfoot > tr > td {
-                padding: 2px 8px;
-            }
-
-            dl dd {
-                margin-left: 2em;
-            }
-
-            /*body {*/
-            /*    position: relative;*/
-            /*}*/
-            /* You could use :after - it doesn't really matter */
-            /*body:before {*/
-            /*    content: ' ';*/
-            /*    display: block;*/
-            /*    position: absolute;*/
-            /*    left: 0;*/
-            /*    top: 0;*/
-            /*    width: 100%;*/
-            /*    height: 100%;*/
-            /*    z-index: -1;*/
-            /*    opacity: 0.1;*/
-            /*    background-image: url('https://www.nomadproject.io/assets/images/nomad-giant-7fcb23ff.jpg');*/
-            /*}*/
-
-        </style>
     </head>
     <body role="document">
-        <div class="container theme-showcase" role="main">
-            <div class="page-header">
-                <h1>{{ block('title') }}{% if block('title') != 'Nomad Cluster Overview' %} <a href="/">Home</a>{% endif %}</h1>
+        <div id="wrapper">
+            <div id="sidebar-wrapper">
+                <ul class="sidebar-nav">
+                    <li class="sidebar-brand"><a href="/"><div class="cube"><span class="face top"></span><span class="face left"></span><span class="face right"></span></div>Nomad</a></li>
+                    <li><a href="nodes.php">Nodes</a></li>
+                    <li><a href="jobs.php">Jobs</a></li>
+                    <li><a href="allocations.php">Allocations</a></li>
+                    <li><a href="evaluations.php">Evaluations</a></li>
+                </ul>
             </div>
-            {% block content %}{% endblock %}
+            <div id="page-content-wrapper">
+                <div class="container-fluid">
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h1 class="page-header">{{ block('title') }}</h1>
+                        </div>
+                    </div>
+
+                    {% block content %}{% endblock %}
+
+                </div>
+                <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Menu</a>
+            </div>
         </div>
+        <script>
+        $("#menu-toggle").click(function(e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+        </script>
     </body>
 </html>

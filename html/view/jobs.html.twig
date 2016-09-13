@@ -1,0 +1,40 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Jobs{% endblock %}
+
+{% block content %}
+
+{% if noinfo %}
+
+    <div class="alert alert-danger">
+        <strong>Error</strong> Could not fetch jobs info!
+    </div>
+
+{% else %}
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Priority</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for job in jobs %}
+            <tr>
+                <td>{{ nomadjlink(job.ID) }}</td>
+                <td>{{ job.Name }}</td>
+                <td>{{ job.Type }}</td>
+                <td>{{ job.Priority }}</td>
+                <td>{{ job.Status }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endif %}
+
+{% endblock %}

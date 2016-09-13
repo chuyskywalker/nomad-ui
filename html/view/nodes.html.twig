@@ -1,0 +1,40 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Nodes{% endblock %}
+
+{% block content %}
+
+{% if noinfo %}
+
+    <div class="alert alert-danger">
+        <strong>Error</strong> Could not fetch nodes info!
+    </div>
+
+{% else %}
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Datacenter</th>
+                <th>Drain</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for node in nodes %}
+            <tr>
+                <td>{{ nomadnlink(node.ID) }}</td>
+                <td>{{ node.Name }}</td>
+                <td>{{ node.Datacenter }}</td>
+                <td>{{ node.Drain }}</td>
+                <td>{{ node.Status }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endif %}
+
+{% endblock %}
