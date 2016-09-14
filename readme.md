@@ -12,6 +12,20 @@ Feature List:
 - [x] Allocation File System Explorer
 - [x] Allocation File Streamer
 
+## Screenshots
+
+Homepage:
+![Homepage](./about/home.png)
+
+Node:
+![Homepage](./about/node.png)
+
+Job:
+![Homepage](./about/job.png)
+
+Allocation (and file streamer):
+![Homepage](./about/allocation.png)
+
 ## Run Nomad UI
 
 You can run the dockerhub hosted image with just the Nomad URL and an ecryption key:
