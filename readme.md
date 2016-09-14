@@ -28,7 +28,7 @@ Allocation (and file streamer):
 
 ## Run Nomad UI
 
-You can run the dockerhub hosted image with just the Nomad URL:
+Provide the Nomad URL and simple invoke the dockerhub hosted image:
 
 ```
 docker run -ti --rm --name=nui \
@@ -37,7 +37,7 @@ docker run -ti --rm --name=nui \
  chuyskywalker/nomad-ui
 ```
 
-That will run this in the foreground and make the UI available at `http://<your-ip>:8090`.
+`nomad-ui` will then be running in the foreground and is available at `http://<your-ip>:8090`.
 
 ## Development
 
