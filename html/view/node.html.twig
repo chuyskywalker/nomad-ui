@@ -12,23 +12,106 @@
 
 {% else %}
 
-    <h2>General Info</h2>
-    <table class="table table-bordered">
-        <tbody>
-            <tr><th>ID</th><td>{{ nodeinfo.ID }}</td></tr>
-            <tr><th>Name</th><td>{{ nodeinfo.Name }}</td></tr>
-            <tr><th>Datacenter</th><td>{{ nodeinfo.Datacenter }}</td></tr>
-            <tr><th>Address</th><td>{{ nodeinfo.HTTPAddr }}</td></tr>
-            <tr><th>Nomad Version</th><td>{{ attribute(nodeinfo.Attributes, 'nomad.version') }}</td></tr>
-            <tr><th>Processor</th><td>{{ attribute(nodeinfo.Attributes, 'cpu.modelname') }}</td></tr>
-            <tr><th>Cores</th><td>{{ attribute(nodeinfo.Attributes, 'cpu.numcores') }}</td></tr>
-            <tr><th>Nomad Version</th><td>{{ attribute(nodeinfo.Attributes, 'nomad.version') }}</td></tr>
-            <tr><th>CPU Frequency</th><td>{{ attribute(nodeinfo.Attributes, 'cpu.frequency') | number_format(0) }}</td></tr>
-            <tr><th>Total Compute</th><td>{{ attribute(nodeinfo.Attributes, 'cpu.totalcompute') | number_format(0) }}</td></tr>
-            <tr><th>Ram (gb)</th><td>{{ (nodeinfo.Resources.MemoryMB / 1024) | number_format(0) }}</td></tr>
-            <tr><th>Disk (gb)</th><td>{{ (nodeinfo.Resources.DiskMB / 1024) | number_format(0) }}</td></tr>
-        </tbody>
-    </table>
+    {#{{ dump(allocations) }}#}
+
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Overview</h2>
+            <table class="table table-bordered">
+                <tbody>
+                    <tr><th>ID</th><td>{{ nodeinfo.ID }}</td></tr>
+                    <tr><th>Name</th><td>{{ nodeinfo.Name }}</td></tr>
+                    <tr><th>Datacenter</th><td>{{ nodeinfo.Datacenter }}</td></tr>
+                    <tr><th>Address</th><td>{{ nodeinfo.HTTPAddr }}</td></tr>
+                    <tr><th>Nomad Version</th><td>{{ attribute(nodeinfo.Attributes, 'nomad.version') }}</td></tr>
+                    <tr><th>Processor</th><td>{{ attribute(nodeinfo.Attributes, 'cpu.modelname') }}</td></tr>
+                    <tr><th>OS</th><td>{{ attribute(nodeinfo.Attributes, 'os.name') }} {{ attribute(nodeinfo.Attributes, 'os.version') }}</td></tr>
+                    <tr><th>Cores</th><td>{{ attribute(nodeinfo.Attributes, 'cpu.numcores') }}</td></tr>
+                    <tr><th>Nomad Version</th><td>{{ attribute(nodeinfo.Attributes, 'nomad.version') }}</td></tr>
+                    <tr><th>CPU Frequency</th><td>{{ attribute(nodeinfo.Attributes, 'cpu.frequency') | number_format(0) }}</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <h2>Capabilities</h2>
+            <table class="table table-bordered">
+                <tbody>
+                    {% if attribute(nodeinfo.Attributes, 'driver.exec') is defined %}
+                    <tr><th>exec</th><td>Yes</td></tr>
+                    {% else %}
+                    <tr><th>exec</th><td>No</td></tr>
+                    {% endif %}
+
+                    {% if attribute(nodeinfo.Attributes, 'driver.raw_exec') is defined %}
+                    <tr><th>raw_exec</th><td>Yes</td></tr>
+                    {% else %}
+                    <tr><th>raw_exec</th><td>No</td></tr>
+                    {% endif %}
+
+                    {% if attribute(nodeinfo.Attributes, 'driver.java') is defined %}
+                    <tr><th>java</th><td>Yes, {{ attribute(nodeinfo.Attributes, 'driver.java.version') }}</td></tr>
+                    {% else %}
+                    <tr><th>java</th><td>No</td></tr>
+                    {% endif %}
+
+                    {% if attribute(nodeinfo.Attributes, 'driver.docker') is defined %}
+                    <tr><th>docker</th><td>Yes, {{ attribute(nodeinfo.Attributes, 'driver.docker.version') }}</td></tr>
+                    {% else %}
+                    <tr><th>docker</th><td>No</td></tr>
+                    {% endif %}
+
+                    {% if attribute(nodeinfo.Attributes, 'driver.qemu') is defined %}
+                    <tr><th>qemu</th><td>Yes</td></tr>
+                    {% else %}
+                    <tr><th>qemu</th><td>No</td></tr>
+                    {% endif %}
+
+                    {% if attribute(nodeinfo.Attributes, 'driver.rkt') is defined %}
+                    <tr><th>rkt</th><td>Yes</td></tr>
+                    {% else %}
+                    <tr><th>rkt</th><td>No</td></tr>
+                    {% endif %}
+                </tbody>
+            </table>
+
+            <h2>Resources</h2>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Reserved</th>
+                        <th>Total</th>
+                        <th>Allocated</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>CPU</th>
+                        <td>{{ (nodeinfo.Reserved.CPU ) | number_format(0) }}</td>
+                        <td>{{ (nodeinfo.Resources.CPU) | number_format(0) }}</td>
+                        <td>
+                            {{ (allocated.CPU) | number_format(0) }}
+                            ({{ (allocated.CPU / nodeinfo.Resources.CPU * 100) | number_format(2) }}%)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>RAM&nbsp;(gb)</th>
+                        <td>{{ (nodeinfo.Reserved.MemoryMB / 1024) | number_format(2) }}</td>
+                        <td>{{ (nodeinfo.Resources.MemoryMB / 1024) | number_format(2) }}</td>
+                        <td>{{ (allocated.MemoryMB / 1024) | number_format(2) }}
+                            ({{ (allocated.MemoryMB / nodeinfo.Resources.MemoryMB * 100) | number_format(2) }}%)</td>
+                    </tr>
+                    <tr>
+                        <th>Disk&nbsp;(gb)</th>
+                        <td>{{ (nodeinfo.Reserved.DiskMB / 1024) | number_format(2) }}</td>
+                        <td>{{ (nodeinfo.Resources.DiskMB / 1024) | number_format(2) }}</td>
+                        <td>{{ (allocated.DiskMB / 1024) | number_format(2) }}
+                            ({{ (allocated.DiskMB / nodeinfo.Resources.DiskMB * 100) | number_format(2) }}%)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
     <h2>Allocations ({{ allocations | length }})</h2>
     {{ include('partial/allocations.html.twig') }}

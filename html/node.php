@@ -10,14 +10,21 @@ if ($_GET['id'] && preg_match('/^[a-zA-Z0-9-]+$/', $_GET['id'])) {
 
 $nomadBaseUrl = Nomad\Nomad::getAddress();
 
-$nodeRaw = @file_get_contents($nomadBaseUrl . '/v1/node/' . $nodeID);
-$nodeInfo = @json_decode($nodeRaw);
+$nodeInfo = @json_decode(@file_get_contents($nomadBaseUrl . '/v1/node/' . $nodeID));
+$nodeAllocationsInfo = @json_decode(@file_get_contents($nomadBaseUrl . '/v1/node/' . $nodeID . '/allocations'));
+$nodeStatsInfo = @json_decode(@file_get_contents('http://' . $nodeInfo->HTTPAddr . '/v1/client/stats'));
 
-$nodeAllocationsRaw = @file_get_contents($nomadBaseUrl . '/v1/node/' . $nodeID . '/allocations');
-$nodeAllocationsInfo = @json_decode($nodeAllocationsRaw);
-
-$nodeStatsRaw = @file_get_contents('http://' . $nodeInfo->HTTPAddr . '/v1/client/stats');
-$nodeStatsInfo = @json_decode($nodeStatsRaw);
+// summarize allocated resources
+$resSum = [
+    'CPU' => 0,
+    'MemoryMB' => 0,
+    'DiskMB' => 0,
+];
+foreach ($nodeAllocationsInfo as $alloc) {
+    $resSum['CPU'] += $alloc->Resources->CPU;
+    $resSum['MemoryMB'] += $alloc->Resources->MemoryMB;
+    $resSum['DiskMB'] += $alloc->Resources->DiskMB;
+}
 
 $twig = Nomad\Nomad::getTwig();
 
@@ -28,4 +35,5 @@ echo $twig->render('node.html.twig', array(
     'nodeinfo' => $nodeInfo,
     'allocations' => $nodeAllocationsInfo,
     'stats' => $nodeStatsInfo,
+    'allocated' => $resSum,
 ));
