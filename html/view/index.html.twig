@@ -13,8 +13,35 @@
 {% else %}
 
     <p>@ {{ baseurl }}</p>
-    <p>Put Fun Stuff Here</p>
-    <p>Mostly, I'm thinking it'd be good to see "What Needs Attention". For example, find and show any jobs with bad allocations/evaluations and what went wrong</p>
+
+    <h2>Utilization</h2>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Node/Cluster</th>
+                <th style="width:33%">CPU</th>
+                <th style="width:33%">RAM</th>
+                <th style="width:33%">Disk</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>Cluster</th>
+                <td><div class="bar" title="{{ cluster.available.CPU }}"><div class="used" title="{{ cluster.allocated.CPU }}" style="width: {{ cluster.allocated.CPU / cluster.available.CPU * 100 }}%"></div></div></td>
+                <td><div class="bar" title="{{ cluster.available.MemoryMB }}"><div class="used" title="{{ cluster.allocated.MemoryMB }}" style="width: {{ cluster.allocated.MemoryMB / cluster.available.MemoryMB * 100 }}%"></div></div></td>
+                <td><div class="bar" title="{{ cluster.available.DiskMB }}"><div class="used" title="{{ cluster.allocated.DiskMB }}" style="width: {{ cluster.allocated.DiskMB / cluster.available.DiskMB * 100 }}%"></div></div></td>
+            </tr>
+            {% for nodename, cluster in nodesums %}
+            <tr style="width:33%">
+                <th>{{ nomadnlink(nodename) }}</th>
+                <td><div class="bar" title="{{ cluster.available.CPU }}"><div class="used" title="{{ cluster.allocated.CPU }}" style="width: {{ cluster.allocated.CPU / cluster.available.CPU * 100 }}%"></div></div></td>
+                <td><div class="bar" title="{{ cluster.available.MemoryMB }}"><div class="used" title="{{ cluster.allocated.MemoryMB }}" style="width: {{ cluster.allocated.MemoryMB / cluster.available.MemoryMB * 100 }}%"></div></div></td>
+                <td><div class="bar" title="{{ cluster.available.DiskMB }}"><div class="used" title="{{ cluster.allocated.DiskMB }}" style="width: {{ cluster.allocated.DiskMB / cluster.available.DiskMB * 100 }}%"></div></div></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
 {% endif %}
 
