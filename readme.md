@@ -28,7 +28,7 @@ Allocation (and file streamer):
 
 ## Run Nomad UI
 
-You can run the dockerhub hosted image with just the Nomad URL and an ecryption key:
+You can run the dockerhub hosted image with just the Nomad URL:
 
 ```
 docker run -ti --rm --name=nui \
@@ -41,7 +41,7 @@ That will run this in the foreground and make the UI available at `http://<your-
 
 ## Development
 
-Pretty easy:
+Build the container, run composer to get dependencies, and then mount the git checkout over a new instance of the container:
 
 ```
 docker build -t nui .
@@ -52,4 +52,4 @@ docker run -d --name=nui \
  nui
 ```
 
-Magically easy, thanks PHP!
+Now just start editing the PHP, JS, CSS, etc and refresh your browser!
