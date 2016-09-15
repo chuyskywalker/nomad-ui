@@ -1,0 +1,19 @@
+{% if raw is defined %}
+<hr/>
+<div>
+    <div>
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#raw" aria-controls="raw" role="tab" data-toggle="tab">Raw JSON Elements</a></li>
+            {% for id, rawval in raw %}
+            <li role="presentation"><a href="#{{ id }}" aria-controls="{{ id }}" role="tab" data-toggle="tab">{{ id }}</a></li>
+            {% endfor %}
+        </ul>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="raw"><pre>JSON data sets used in the generation of this page</pre></div>
+            {% for id, rawval in raw %}
+            <div role="tabpanel" class="tab-pane" id="{{ id }}"><pre class="raw">{{ rawval }}</pre></div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
