@@ -75,4 +75,13 @@ echo $twig->render('job.html.twig', array(
     'allocations' => $jobAllocationsInfo,
     'evaluations' => $jobEvaluationsInfo,
     'allocationHistory' => $allocationHistory,
+    'crumbs' => [
+        'Home' => 'index.php',
+        'Jobs' => 'jobs.php',
+    ],
+    'raw' => [
+        'Info' => json_encode($jobInfo, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES),
+        'Allocations' => json_encode($jobAllocationsInfo, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES),
+        'Evaluations' => json_encode($jobEvaluationsInfo, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES),
+    ],
 ));

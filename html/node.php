@@ -36,4 +36,13 @@ echo $twig->render('node.html.twig', array(
     'allocations' => $nodeAllocationsInfo,
     'stats' => $nodeStatsInfo,
     'allocated' => $resSum,
+    'crumbs' => [
+        'Home' => 'index.php',
+        'Nodes' => 'nodes.php',
+    ],
+    'raw' => [
+        'Info' => json_encode($nodeInfo, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES),
+        'Allocations' => json_encode($nodeAllocationsInfo, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES),
+        'Stats' => json_encode($nodeStatsInfo, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES),
+    ],
 ));

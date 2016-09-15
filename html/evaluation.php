@@ -23,4 +23,12 @@ echo $twig->render('evaluation.html.twig', array(
     'noinfo' => empty($evaluationInfo),
     'evaluation' => $evaluationInfo,
     'allocations' => $evaluationAllocationInfo,
+    'crumbs' => [
+        'Home' => 'index.php',
+        'Evaluations' => 'evaluations.php',
+    ],
+    'raw' => [
+        'Info' => json_encode($evaluationInfo, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES),
+        'Allocations' => json_encode($evaluationAllocationInfo, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES),
+    ],
 ));

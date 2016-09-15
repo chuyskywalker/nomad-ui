@@ -80,4 +80,5 @@ echo $twig->render('index.html.twig', array(
     'nodes' => $nodes,
     'cluster' => $clusterStats,
     'nodesums' => $nodeStats,
+    'crumbs' => [],
 ));

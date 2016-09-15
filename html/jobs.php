@@ -8,4 +8,10 @@ $twig = Nomad\Nomad::getTwig();
 echo $twig->render('jobs.html.twig', array(
     'noinfo' => empty($info),
     'jobs' => $info,
+    'crumbs' => [
+        'Home' => 'index.php',
+    ],
+    'raw' => [
+        'Info' => json_encode($info, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES),
+    ],
 ));

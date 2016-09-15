@@ -14,4 +14,10 @@ $twig = Nomad\Nomad::getTwig();
 echo $twig->render('allocations.html.twig', array(
     'noinfo' => empty($info),
     'allocations' => $info,
+    'crumbs' => [
+        'Home' => 'index.php',
+    ],
+    'raw' => [
+        'Info' => json_encode($info, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES),
+    ],
 ));

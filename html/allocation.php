@@ -73,4 +73,13 @@ echo $twig->render('allocation.html.twig', array(
     'file' => $file,
     'filestream' => $fileStream,
     'parent' => $parentPath,
+    'crumbs' => [
+        'Home' => 'index.php',
+        'Allocations' => 'allocations.php',
+    ],
+    'raw' => [
+        'Info' => json_encode($allocationInfo, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES),
+        'Node' => json_encode($nodeInfo, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES),
+        'FileList' => json_encode($ls, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES),
+    ],
 ));
