@@ -58,6 +58,9 @@ foreach ($infos as $info) {
     } else {
         // node allocations
         foreach ($info as $alloc) {
+            if ($alloc->ClientStatus != 'running') { // doesn't count if it's not running!
+                continue;
+            }
             $clusterStats['allocated']['CPU'] += $alloc->Resources->CPU;
             $clusterStats['allocated']['MemoryMB'] += $alloc->Resources->MemoryMB;
             $clusterStats['allocated']['DiskMB'] += $alloc->Resources->DiskMB;
