@@ -2,7 +2,7 @@
 
 require 'vendor/autoload.php';
 
-if ($_GET['id'] && preg_match('/^[a-zA-Z0-9-_]+$/', $_GET['id'])) {
+if ($_GET['id'] && preg_match('/^[a-zA-Z0-9-_\/]+$/', $_GET['id'])) {
     $jobID = $_GET['id'];
 } else {
     return;
