@@ -12,8 +12,8 @@ class Nomad {
         $loader = new \Twig_Loader_Filesystem(__DIR__.'/../view');
         $twig = new \Twig_Environment($loader, array(
             'cache' => '/tmp',
-            'debug' => true,
-            'strict_variables' => true,
+            'debug' => (bool) getenv(NOMAD_TWIG_DEBUG),
+            'strict_variables' => (bool) getenv(NOMAD_TWIG_DEBUG),
         ));;
         $twig->addFunction(new \Twig_SimpleFunction('nomadalink', ['Nomad\\Link', 'a'], ['is_safe' => ['html']]));
         $twig->addFunction(new \Twig_SimpleFunction('nomadelink', ['Nomad\\Link', 'e'], ['is_safe' => ['html']]));

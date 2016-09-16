@@ -48,6 +48,7 @@ docker build -t nui .
 docker run -ti --rm -v $(pwd)/html:/app composer/composer install
 docker run -d --name=nui \
  -e 'NOMAD_BASEURL=http://nomad.service.consul:4646' \
+ -e 'NOMAD_TWIG_DEBUG=1' \
  -v `pwd`/html:/var/www/html \
  nui
 ```
