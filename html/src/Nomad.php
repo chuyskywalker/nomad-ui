@@ -19,6 +19,7 @@ class Nomad {
         $twig->addFunction(new \Twig_SimpleFunction('nomadelink', ['Nomad\\Link', 'e'], ['is_safe' => ['html']]));
         $twig->addFunction(new \Twig_SimpleFunction('nomadnlink', ['Nomad\\Link', 'n'], ['is_safe' => ['html']]));
         $twig->addFunction(new \Twig_SimpleFunction('nomadjlink', ['Nomad\\Link', 'j'], ['is_safe' => ['html']]));
+        $twig->addFunction(new \Twig_SimpleFunction('nomadslink', ['Nomad\\Link', 's'], ['is_safe' => ['html']]));
         $twig->addFunction(new \Twig_SimpleFunction('dump', function($val) { return '<pre>' . print_r($val,1) . '</pre>'; }, ['is_safe' => ['html']]));
         $twig->addFilter(new \Twig_SimpleFilter('human_filesize', function($bytes, $decimals = 2) {
             if ($bytes == 0) {

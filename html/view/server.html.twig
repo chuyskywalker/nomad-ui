@@ -1,0 +1,41 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Server: {{ serverid }}{% endblock %}
+
+{% block content %}
+
+{% if noinfo %}
+
+    <div class="alert alert-danger">
+        <strong>Error</strong> Could not fetch server info
+    </div>
+
+{% else %}
+
+
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Server Info</h2>
+            {{ include('partial/table.html.twig', {tbl: serverinfo.config.Server|cast_to_array}, with_context = false) }}
+        </div>
+        <div class="col-md-4">
+            <h2>Client</h2>
+            {{ include('partial/table.html.twig', {tbl: serverinfo.config.Client|cast_to_array}, with_context = false) }}
+        </div>
+        <div class="col-md-4">
+            <h2>Consul</h2>
+            {{ include('partial/table.html.twig', {tbl: serverinfo.config.Consul|cast_to_array}, with_context = false) }}
+        </div>
+    </div>
+
+    <h2>Stats</h2>
+    {% for statset, tbl in serverinfo.stats|cast_to_array %}
+    <h3>{{ statset }}</h3>
+    {{ include('partial/table.html.twig', {tbl: tbl|cast_to_array}, with_context = false) }}
+    {% endfor %}
+
+
+
+{% endif %}
+
+{% endblock %}

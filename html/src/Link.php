@@ -21,4 +21,8 @@ class Link {
         return '<a href="job.php?id=' . $text . '" title="' . $text . '">' . $text . '</a>';
     }
 
+    public function s($text) {
+        return '<a href="server.php?id=' . $text . '" title="' . $text . '">' . $text . '</a>';
+    }
+
 }

@@ -1,0 +1,51 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Servers{% endblock %}
+
+{% block content %}
+
+{% if noinfo %}
+
+    <div class="alert alert-danger">
+        <strong>Error</strong> Could not fetch servers info!
+    </div>
+
+{% else %}
+
+    <p><strong>Servers</strong> are Nomad agents which manage clients, evaluations, and allocations.</p>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Client</th>
+                <th>DC</th>
+                <th>Node Name</th>
+                <th>Version</th>
+                <th>Member Name</th>
+                <th>Member Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for id, server in serverinfos %}
+            <tr>
+                {% if server is null %}
+                <td>{{ id }}</td>
+                <td colspan=99>Server did not respond to api query</td>
+                {% else %}
+                <td>{{ nomadslink(id) }}</td>
+                <td>{{ server.config.Client.Enabled ? 'Yes' : 'No' }}</td>
+                <td>{{ server.config.Datacenter }}</td>
+                <td>{{ server.config.NodeName }}</td>
+                <td>{{ server.config.Version }}</td>
+                <td>{{ server.member.Name }}</td>
+                <td>{{ server.member.Status }}</td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endif %}
+
+{% endblock %}

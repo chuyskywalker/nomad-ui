@@ -1,0 +1,21 @@
+{% if tbl is defined %}
+<table class="table table-bordered">
+    <tbody>
+        {% for id, item in tbl %}
+        <tr>
+            <th>{{ id }}</th>
+            <td><code>
+                {{ item | json_encode(constant('JSON_PRETTY_PRINT')) }}
+                {#{% if item is same as(true) %}#}
+                {#True#}
+                {#{% elseif item is same as(false) %}#}
+                {#False#}
+                {#{% else %}#}
+                {#{{ item | join(', ') }}#}
+                {#{% endif %}#}
+            </code></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
