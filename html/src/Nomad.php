@@ -28,6 +28,9 @@ class Nomad {
             $factor = floor((strlen($bytes) - 1) / 3);
             return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$size[$factor];
         }));
+        $twig->addFilter(new \Twig_SimpleFilter('cast_to_array', function ($stdClassObject) {
+            return (array)$stdClassObject;
+        }));
         return $twig;
     }
 
