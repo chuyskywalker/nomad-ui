@@ -55,6 +55,8 @@ class Nomad {
             curl_setopt($curly[$id], CURLOPT_URL,            $url);
             curl_setopt($curly[$id], CURLOPT_HEADER,         0);
             curl_setopt($curly[$id], CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curly[$id], CURLOPT_CONNECTTIMEOUT, 1);
+            curl_setopt($curly[$id], CURLOPT_TIMEOUT,        3);
 
             // post?
             if (is_array($d)) {
