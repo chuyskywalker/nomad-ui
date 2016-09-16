@@ -5,7 +5,8 @@ A basic, linkable, fast Nomad UI.
 Feature List:
 
 - [x] Overview index: Nodes, Jobs, Allocations, and Evaluations
-- [x] Node details
+- [x] Node (client) details
+- [x] Server details
 - [x] Job details
 - [ ] Evaluation details
 - [x] Allocation details
